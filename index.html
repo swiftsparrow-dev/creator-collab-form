@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brand Campaign Request — Creator Collab</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-dark: #1B4332;
+    --green-mid: #2D6A4F;
+    --green-light: #52B788;
+    --green-pale: #D8F3DC;
+    --green-bg: #F0FAF3;
+    --text: #1A1A1A;
+    --text-muted: #6B7280;
+    --border: #D1D5DB;
+    --white: #FFFFFF;
+    --error: #DC2626;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--green-bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* Header */
+  .form-header {
+    background: var(--green-dark);
+    color: white;
+    padding: 48px 32px 40px;
+    text-align: center;
+  }
+  .form-header .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-light);
+    margin-bottom: 12px;
+  }
+  .form-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .form-header p {
+    font-size: 15px;
+    color: #A7C4B0;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    background: var(--green-dark);
+    padding: 0 32px 32px;
+  }
+  .progress-track {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    gap: 6px;
+  }
+  .progress-seg {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    transition: background 0.3s;
+  }
+  .progress-seg.active { background: var(--green-light); }
+
+  /* Container */
+  .form-body {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  /* Section */
+  .section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .section-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    margin-top: 32px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    background: var(--green-mid);
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-num {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600; color: white;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: white;
+  }
+  .section-header p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 2px;
+  }
+
+  .section-fields { padding: 28px 32px 32px; }
+
+  /* Field */
+  .field { margin-bottom: 24px; }
+  .field:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  label .req { color: var(--green-mid); margin-left: 2px; }
+  label .opt { color: var(--text-muted); font-weight: 400; font-size: 12px; margin-left: 4px; }
+
+  .hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="date"],
+  input[type="url"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: white;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--green-mid);
+    box-shadow: 0 0 0 3px rgba(45,106,79,0.12);
+  }
+  textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+
+  /* Checkbox / Radio grid */
+  .check-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+  }
+  .check-grid.col-1 { grid-template-columns: 1fr; }
+  .check-grid.col-2 { grid-template-columns: 1fr 1fr; }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .check-item:hover { border-color: var(--green-light); background: var(--green-bg); }
+  .check-item input { display: none; }
+  .check-item .box {
+    width: 18px; height: 18px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .check-item.radio .box { border-radius: 50%; }
+  .check-item input:checked ~ .box {
+    background: var(--green-mid);
+    border-color: var(--green-mid);
+  }
+  .check-item input:checked ~ .box::after {
+    content: '';
+    display: block;
+    width: 5px; height: 9px;
+    border: 2px solid white;
+    border-top: none; border-left: none;
+    transform: rotate(45deg) translate(-1px, -1px);
+  }
+  .check-item.radio input:checked ~ .box::after {
+    width: 7px; height: 7px;
+    border: none;
+    background: white;
+    border-radius: 50%;
+    transform: none;
+  }
+  .check-item.selected { border-color: var(--green-mid); background: var(--green-pale); }
+  .check-label { font-size: 13px; line-height: 1.4; color: var(--text); }
+
+  /* Two column layout */
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+
+  /* Note box */
+  .note-box {
+    background: var(--green-pale);
+    border-left: 3px solid var(--green-mid);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #2D6A4F;
+    line-height: 1.5;
+    margin-top: 8px;
+  }
+  .note-box strong { font-weight: 600; }
+
+  /* Conditional field */
+  .conditional { display: none; }
+  .conditional.show { display: block; }
+
+  /* Navigation */
+  .nav-wrap {
+    max-width: 680px;
+    margin: 24px auto 0;
+    padding: 0 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn {
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+  .btn-back {
+    background: white;
+    color: var(--text-muted);
+    border: 1.5px solid var(--border);
+  }
+  .btn-back:hover { border-color: var(--green-mid); color: var(--green-mid); }
+  .btn-next {
+    background: var(--green-mid);
+    color: white;
+    margin-left: auto;
+  }
+  .btn-next:hover { background: var(--green-dark); }
+  .btn-submit {
+    background: var(--green-dark);
+    color: white;
+    padding: 14px 36px;
+    font-size: 15px;
+  }
+  .btn-submit:hover { background: #0F2B1E; }
+
+  .step-indicator {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* Validation */
+  .field.error input,
+  .field.error select,
+  .field.error textarea {
+    border-color: var(--error);
+  }
+  .field-error {
+    font-size: 12px;
+    color: var(--error);
+    margin-top: 4px;
+    display: none;
+  }
+  .field.error .field-error { display: block; }
+
+  /* Success screen */
+  #success-screen {
+    display: none;
+    max-width: 680px;
+    margin: 48px auto 0;
+    padding: 0 16px;
+    text-align: center;
+  }
+  .success-icon {
+    width: 72px; height: 72px;
+    background: var(--green-pale);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 32px;
+  }
+  #success-screen h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--green-dark);
+    margin-bottom: 12px;
+  }
+  #success-screen p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 420px;
+    margin: 0 auto 12px;
+  }
+  .next-steps {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 28px;
+    text-align: left;
+    box-shadow: var(--shadow);
+  }
+  .next-steps h3 { font-size: 14px; font-weight: 600; color: var(--green-dark); margin-bottom: 14px; }
+  .next-step-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--green-bg);
+  }
+  .next-step-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .step-num {
+    width: 24px; height: 24px;
+    background: var(--green-mid);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .step-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+  @media (max-width: 480px) {
+    .section-fields { padding: 20px; }
+    .section-header { padding: 20px; }
+    .check-grid { grid-template-columns: 1fr; }
+    .check-grid.col-2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="form-header">
+  <div class="eyebrow">Creator Collab Platform</div>
+  <h1>Launch Your Influencer Campaign</h1>
+  <p>Fill in your campaign details below. We'll match you with verified creators and handle everything — briefing, content review, and payments.</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-track" id="progressTrack">
+    <div class="progress-seg active"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+  </div>
+</div>
+
+<div class="form-body">
+
+  <!-- SECTION 1: Brand Info -->
+  <div class="section active" id="section-1">
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div>
+          <h2>Brand Information</h2>
+          <p>Tell us about your brand so we can find the right creators</p>
+        </div>
+      </div>
+      <div class="section-fields">
+
+        <div class="field-row">
+          <div class="field">
+            <label>Brand Name <span class="req">*</span></label>
+            <input type="text" id="brandName" placeholder="e.g. Nourish Natural Foods">
+            <div class="field-error">Please enter your brand name</div>
+          </div>
+          <div class="field">
+            <label>Your Name & Role <span class="req">*</span></label>
+            <input type="text" id="yourName" placeholder="e.g. Priya — Founder">
+            <div class="field-error">Please enter your name</div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Brand Instagram Handle <span class="req">*</span></label>
+            <input type="text" id="instagram" placeholder="@yourbrand">
+            <div class="field-error">Please enter your Instagram handle</div>
+          </div>
+          <div class="field">
+            <label>WhatsApp Number <span class="req">*</span></label>
+            <input type="tel" id="whatsapp" placeholder="+91 98765 43210">
+            <div class="field-error">Please enter your WhatsApp number</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Email Address <span class="req">*</span></label>
+          <input type="email" id="email" placeholder="you@yourbrand.com">
+          <div class="field-error">Please enter a valid email address</div>
+        </div>
+
+        <div class="field">
+          <label>Product / Service Category <span class="req">*</span></label>
+          <select id="category">
+            <option value="">Select a category</option>
+            <option>Food & Beverage</option>
+            <option>Fashion & Apparel</option>
+            <option>Beauty & Skincare</option>
+            <option>Health & Fitness</option>
+            <option>EdTech / Online Courses</option>
+            <option>Home & Lifestyle</option>
+            <option>Tech & Gadgets</option>
+            <option>Jewellery & Accessories</option>
+            <option>Baby & Parenting</option>
+            <option>Other</option>
+          </select>
+          <div class="field-error">Please select a category</div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>City / Cities You Sell In <span class="req">*</span></label>
+            <input type="text" id="city" placeholder="e.g. Bangalore, pan-India">
+            <div class="field-error">Please enter your city</div>
+          </div>
+          <div class="field">
+            <label>Website or Store Link <span class="opt">(optional)</span></label>
+            <input type="url" id="website" placeholder="https://yourbrand.com">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Campaign Details -->
+  <div class="section" id="section-2">
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div>
+          <h2>Campaign Details</h2>
+          <p>What should creators post and by when?</p>
+        </div>
+      </div>
+      <div class="section-fields">
+
+        <div class="field">
+          <label>Campaign Objective <span class="req">*</span></label>
+          <select id="objective">
+            <option value="">Select an objective</option>
+            <option>Brand Awareness</option>
+            <option>Product Launch</option>
+            <option>Drive Sales / Conversions</option>
+            <option>App Installs</option>
+            <option>Event Promotion</option>
+            <option>Grow Instagram Followers</option>
+          </select>
+          <div class="field-error">Please select an objective</div>
+        </div>
+
+        <div class="field">
+          <label>What should the creator post? <span class="req">*</span></label>
+          <div class="hint">Select all that apply</div>
+          <div class="check-grid col-2">
+            <label class="check-item"><input type="checkbox" name="postType" value="Instagram Reel"><span class="box"></span><span class="check-label">Instagram Reel</span></label>
+            <label class="check-item"><input type="checkbox" name="postType" value="Instagram Static Post"><span class="box"></span><span class="check-label">Instagram Static Post</span></label>
+            <label class="check-item"><input type="checkbox" name="postType" value="Instagram Story"><span class="box"></span><span class="check-label">Instagram Story (min 3 frames)</span></label>
+            <label class="check-item"><input type="checkbox" name="postType" value="YouTube Short"><span class="box"></span><span class="check-label">YouTube Short</span></label>
+            <label class="check-item"><input type="checkbox" name="postType" value="YouTube Long-form"><span class="box"></span><span class="check-label">YouTube Long-form Video</span></label>
+            <label class="check-item"><input type="checkbox" name="postType" value="Combination"><span class="box"></span><span class="check-label">Combination (specify below)</span></label>
+          </div>
+          <div class="field-error" id="postTypeError">Please select at least one post type</div>
+        </div>
+
+        <div class="field">
+          <label>Campaign Brief <span class="req">*</span></label>
+          <div class="hint">Describe exactly what you want creators to talk about — product benefits, story, tone, what to show on camera</div>
+          <textarea id="brief" placeholder="e.g. We want creators to showcase our new Mango Chilli protein bar. Show them trying it mid-workout or as an evening snack. Talk about the taste (sweet + spicy), the 20g protein, and how it's guilt-free. Keep it authentic, not scripted."></textarea>
+          <div class="field-error">Please enter a campaign brief</div>
+        </div>
+
+        <div class="field">
+          <label>Key Messages to Include <span class="req">*</span></label>
+          <div class="hint">Bullet points work best — specific claims, discount codes, handles to tag</div>
+          <textarea id="keyMessages" placeholder="- Mention '20g protein per bar'&#10;- Use code MANGO10 for 10% off&#10;- Tag @nourish.india in the post&#10;- Include #NourishBar #ProteinSnack"></textarea>
+          <div class="field-error">Please enter key messages</div>
+        </div>
+
+        <div class="field">
+          <label>Content Restrictions <span class="opt">(optional)</span></label>
+          <div class="hint">Anything creators must NOT do or say</div>
+          <textarea id="restrictions" placeholder="e.g. No competitor brand mentions. No heavy filters that alter product colour. Do not make medical/health claims."></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Content Deadline <span class="req">*</span></label>
+            <div class="hint">Date by which creator must post</div>
+            <input type="date" id="deadline">
+            <div class="field-error">Please set a deadline</div>
+          </div>
+        </div>
+        <div class="note-box">📌 Leave at least <strong>7 days from today</strong> — we need time for creator selection, briefing, and content creation.</div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Creator Requirements -->
+  <div class="section" id="section-3">
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div>
+          <h2>Creator Requirements</h2>
+          <p>Help us shortlist the right creators for your brand</p>
+        </div>
+      </div>
+      <div class="section-fields">
+
+        <div class="field">
+          <label>Preferred Follower Range <span class="req">*</span></label>
+          <div class="check-grid col-2">
+            <label class="check-item"><input type="checkbox" name="followers" value="1K–5K"><span class="box"></span><span class="check-label">1K – 5K (Nano)</span></label>
+            <label class="check-item"><input type="checkbox" name="followers" value="5K–20K"><span class="box"></span><span class="check-label">5K – 20K (Micro)</span></label>
+            <label class="check-item"><input type="checkbox" name="followers" value="20K–50K"><span class="box"></span><span class="check-label">20K – 50K (Mid-tier)</span></label>
+            <label class="check-item"><input type="checkbox" name="followers" value="50K+"><span class="box"></span><span class="check-label">50K+ (Macro)</span></label>
+            <label class="check-item"><input type="checkbox" name="followers" value="No preference"><span class="box"></span><span class="check-label">No preference</span></label>
+          </div>
+          <div class="field-error" id="followersError">Please select a follower range</div>
+        </div>
+
+        <div class="field">
+          <label>Creator Niche <span class="req">*</span></label>
+          <div class="hint">Select all niches that are a good fit</div>
+          <div class="check-grid">
+            <label class="check-item"><input type="checkbox" name="niche" value="Lifestyle"><span class="box"></span><span class="check-label">Lifestyle</span></label>
+            <label class="check-item"><input type="checkbox" name="niche" value="Food & Cooking"><span class="box"></span><span class="check-label">Food & Cooking</span></label>
+            <label class="check-item"><input type="checkbox" name="niche" value="Fashion & OOTD"><span class="box"></span><span class="check-label">Fashion & OOTD</span></label>
+            <label class="check-item"><input type="checkbox" name="niche" value="Beauty & Makeup"><span class="box"></span><span class="check-label">Beauty & Makeup</span></label>
+            <label class="check-item"><input type="checkbox" name="niche" value="Fitness & Health"><span class="box"></span><span class="check-label">Fitness & Health</span></label>
+            <label class="check-item"><input type="checkbox" name="niche" value="Parenting & Family"><span class="box"></span><span class="check-label">Parenting & Family</span></label>
+            <label class="check-item"><input type="checkbox" name="niche" value="Tech & Gadgets"><span class="box"></span><span class="check-label">Tech & Gadgets</span></label>
+            <label class="check-item"><input type="checkbox" name="niche" value="Finance"><span class="box"></span><span class="check-label">Finance</span></label>
+            <label class="check-item"><input type="checkbox" name="niche" value="Travel"><span class="box"></span><span class="check-label">Travel</span></label>
+            <label class="check-item"><input type="checkbox" name="niche" value="Comedy"><span class="box"></span><span class="check-label">Comedy & Entertainment</span></label>
+          </div>
+          <div class="field-error" id="nicheError">Please select at least one niche</div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Creator City Preference <span class="req">*</span></label>
+            <input type="text" id="creatorCity" placeholder="e.g. Bangalore, or Pan-India">
+            <div class="field-error">Please enter a city preference</div>
+          </div>
+          <div class="field">
+            <label>Number of Creators Needed <span class="req">*</span></label>
+            <select id="numCreators">
+              <option value="">Select</option>
+              <option>3</option>
+              <option>5</option>
+              <option>8</option>
+              <option>10</option>
+              <option>More than 10 — let's discuss</option>
+            </select>
+            <div class="field-error">Please select a number</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Content Language <span class="opt">(optional)</span></label>
+          <div class="hint">e.g. English, Hindi, Kannada, Odia, Mix — type any combination</div>
+          <input type="text" id="language" placeholder="e.g. English + Kannada, or Hindi only">
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Minimum Engagement Rate</label>
+            <select id="engagementRate">
+              <option>Not sure — you decide</option>
+              <option>2%+</option>
+              <option>4%+</option>
+              <option>6%+</option>
+              <option>8%+</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Gender Preference <span class="opt">(optional)</span></label>
+            <select id="gender">
+              <option>No preference</option>
+              <option>Female creators only</option>
+              <option>Male creators only</option>
+              <option>Mix of both</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Compensation -->
+  <div class="section" id="section-4">
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div>
+          <h2>Compensation</h2>
+          <p>How will creators be rewarded for their work?</p>
+        </div>
+      </div>
+      <div class="section-fields">
+
+        <div class="field">
+          <label>Campaign Type <span class="req">*</span></label>
+          <div class="check-grid col-1">
+            <label class="check-item radio"><input type="radio" name="campaignType" value="Paid cash"><span class="box"></span><span class="check-label"><strong>Paid cash</strong> — creators receive a fixed ₹ amount per post</span></label>
+            <label class="check-item radio"><input type="radio" name="campaignType" value="Barter"><span class="box"></span><span class="check-label"><strong>Barter only</strong> — creators receive your product/service for free</span></label>
+            <label class="check-item radio"><input type="radio" name="campaignType" value="Paid + Barter"><span class="box"></span><span class="check-label"><strong>Paid cash + barter</strong> — cash payment AND free product</span></label>
+          </div>
+          <div class="field-error" id="campaignTypeError">Please select a campaign type</div>
+          <div class="note-box" style="margin-top:12px">💡 Paid campaigns get <strong>3x more creator applications</strong> than barter-only. Barter works best when product MRP is ₹800+.</div>
+        </div>
+
+        <div class="field conditional" id="paidField">
+          <label>Budget Per Creator (₹) <span class="req">*</span></label>
+          <select id="budgetPerCreator">
+            <option value="">Select a range</option>
+            <option>₹500 – ₹1,000</option>
+            <option>₹1,000 – ₹3,000</option>
+            <option>₹3,000 – ₹5,000</option>
+            <option>₹5,000 – ₹10,000</option>
+            <option>Above ₹10,000</option>
+            <option>Not sure — suggest based on profile</option>
+          </select>
+          <div class="field-error">Please select a budget range</div>
+        </div>
+
+        <div class="field conditional" id="barterField">
+          <label>Barter Product Details</label>
+          <div class="hint">Product name, MRP, and how it will be delivered to the creator</div>
+          <textarea id="barterDetails" placeholder="e.g. Mango Chilli Protein Bar Pack (6 bars), MRP ₹599. Will be couriered to creator's address within 3 days of selection."></textarea>
+        </div>
+
+        <div class="field">
+          <label>Total Campaign Budget (₹) <span class="opt">(optional)</span></label>
+          <div class="hint">Including creator payments. We add a 10% platform fee on top.</div>
+          <input type="text" id="totalBudget" placeholder="e.g. ₹15,000">
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Approval & Process -->
+  <div class="section" id="section-5">
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <div>
+          <h2>Approval & Process</h2>
+          <p>How involved do you want to be in the campaign?</p>
+        </div>
+      </div>
+      <div class="section-fields">
+
+        <div class="field">
+          <label>Do you want to approve the creator shortlist before they're briefed? <span class="req">*</span></label>
+          <div class="check-grid col-1">
+            <label class="check-item radio"><input type="radio" name="approveCreators" value="Yes"><span class="box"></span><span class="check-label"><strong>Yes</strong> — send me creator profiles first (adds 1–2 days to timeline)</span></label>
+            <label class="check-item radio"><input type="radio" name="approveCreators" value="No"><span class="box"></span><span class="check-label"><strong>No</strong> — brief matching creators directly, I trust your judgement</span></label>
+          </div>
+          <div class="field-error" id="approveCreatorsError">Please select an option</div>
+        </div>
+
+        <div class="field">
+          <label>Do you want to review content before it goes live? <span class="req">*</span></label>
+          <div class="check-grid col-1">
+            <label class="check-item radio"><input type="radio" name="approveContent" value="Yes"><span class="box"></span><span class="check-label"><strong>Yes</strong> — send me the draft/script for approval (adds 3–5 days)</span></label>
+            <label class="check-item radio"><input type="radio" name="approveContent" value="No"><span class="box"></span><span class="check-label"><strong>No</strong> — creator can post directly and share the live link</span></label>
+          </div>
+          <div class="field-error" id="approveContentError">Please select an option</div>
+        </div>
+
+        <div class="field">
+          <label>How would you like to receive the campaign report?</label>
+          <div class="check-grid col-2">
+            <label class="check-item"><input type="checkbox" name="report" value="WhatsApp PDF"><span class="box"></span><span class="check-label">WhatsApp (PDF summary)</span></label>
+            <label class="check-item"><input type="checkbox" name="report" value="Email"><span class="box"></span><span class="check-label">Email</span></label>
+            <label class="check-item"><input type="checkbox" name="report" value="Google Sheet"><span class="box"></span><span class="check-label">Shared Google Sheet</span></label>
+            <label class="check-item"><input type="checkbox" name="report" value="All"><span class="box"></span><span class="check-label">All of the above</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Anything else we should know? <span class="opt">(optional)</span></label>
+          <textarea id="notes" placeholder="Any specific creator accounts you've liked, past campaign experience, brand guidelines, or questions for us..."></textarea>
+        </div>
+
+        <div class="note-box">
+          <strong>What happens next:</strong><br>
+          We'll review your brief and WhatsApp you a campaign summary within 24 hours. Creator payments are collected upfront via Razorpay and released only after you approve the deliverables. You stay in control throughout.
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- /form-body -->
+
+<!-- Navigation -->
+<div class="nav-wrap" id="navWrap">
+  <button class="btn btn-back" id="btnBack" onclick="prevSection()" style="display:none">← Back</button>
+  <span class="step-indicator" id="stepIndicator">Step 1 of 5</span>
+  <button class="btn btn-next" id="btnNext" onclick="nextSection()">Next →</button>
+</div>
+
+<!-- Success Screen -->
+<div id="success-screen">
+  <div class="success-icon">✅</div>
+  <h2>Campaign Request Submitted!</h2>
+  <p>Thank you! We've received your campaign brief. Smruti will review it and WhatsApp you a campaign summary within 24 hours.</p>
+  <p style="font-size:13px; color:#9CA3AF;">Questions? WhatsApp: <strong>+91 74115 63271</strong></p>
+  <div class="next-steps">
+    <h3>What happens next</h3>
+    <div class="next-step-item">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Within 24 hours</strong> — You'll get a campaign summary + Razorpay payment link on WhatsApp</div>
+    </div>
+    <div class="next-step-item">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Day 2–3</strong> — Creator shortlist shared for your review (if you selected approval)</div>
+    </div>
+    <div class="next-step-item">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Day 4–5</strong> — Selected creators briefed, work begins</div>
+    </div>
+    <div class="next-step-item">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>By your deadline</strong> — Content submitted for your approval, payment released on sign-off</div>
+    </div>
+    <div class="next-step-item">
+      <div class="step-num">5</div>
+      <div class="step-text"><strong>Post-campaign</strong> — Full performance report with post links, reach & engagement</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let current = 1;
+  const total = 5;
+
+  function updateProgress() {
+    const segs = document.querySelectorAll('.progress-seg');
+    segs.forEach((s, i) => s.classList.toggle('active', i < current));
+    document.getElementById('stepIndicator').textContent = `Step ${current} of ${total}`;
+    document.getElementById('btnBack').style.display = current > 1 ? 'block' : 'none';
+    document.getElementById('btnNext').textContent = current === total ? '✓ Submit Campaign' : 'Next →';
+    document.getElementById('btnNext').className = current === total ? 'btn btn-submit' : 'btn btn-next';
+  }
+
+  function showSection(n) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(`section-${n}`).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateProgress();
+  }
+
+  function validateSection(n) {
+    let valid = true;
+
+    const req = (id) => {
+      const el = document.getElementById(id);
+      const field = el?.closest('.field');
+      if (!el || !el.value.trim()) { field?.classList.add('error'); valid = false; }
+      else field?.classList.remove('error');
+    };
+
+    const reqCheck = (name, errId) => {
+      const checked = document.querySelectorAll(`input[name="${name}"]:checked`);
+      const err = document.getElementById(errId);
+      if (checked.length === 0) { if(err) err.style.display='block'; valid = false; }
+      else { if(err) err.style.display='none'; }
+    };
+
+    const reqRadio = (name, errId) => {
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      const err = document.getElementById(errId);
+      if (!checked) { if(err) err.style.display='block'; valid = false; }
+      else { if(err) err.style.display='none'; }
+    };
+
+    if (n === 1) {
+      req('brandName'); req('yourName'); req('instagram');
+      req('whatsapp'); req('email'); req('category'); req('city');
+    }
+    if (n === 2) {
+      req('objective'); req('brief'); req('keyMessages'); req('deadline');
+      reqCheck('postType', 'postTypeError');
+    }
+    if (n === 3) {
+      req('creatorCity'); req('numCreators');
+      reqCheck('followers', 'followersError');
+      reqCheck('niche', 'nicheError');
+    }
+    if (n === 4) {
+      reqRadio('campaignType', 'campaignTypeError');
+    }
+    if (n === 5) {
+      reqRadio('approveCreators', 'approveCreatorsError');
+      reqRadio('approveContent', 'approveContentError');
+    }
+    return valid;
+  }
+
+  function nextSection() {
+    if (!validateSection(current)) return;
+    if (current < total) {
+      current++;
+      showSection(current);
+    } else {
+      submitForm();
+    }
+  }
+
+  function prevSection() {
+    if (current > 1) { current--; showSection(current); }
+  }
+
+  function submitForm() {
+    document.querySelector('.form-body').style.display = 'none';
+    document.getElementById('navWrap').style.display = 'none';
+    document.querySelector('.progress-wrap').style.display = 'none';
+    document.getElementById('success-screen').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Checkbox visual toggle
+  document.querySelectorAll('.check-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const inp = item.querySelector('input');
+      const isRadio = inp.type === 'radio';
+      if (isRadio) {
+        document.querySelectorAll(`input[name="${inp.name}"]`).forEach(r => {
+          r.closest('.check-item').classList.remove('selected');
+        });
+      }
+      setTimeout(() => {
+        item.classList.toggle('selected', inp.checked);
+      }, 10);
+    });
+  });
+
+  // Campaign type conditional fields
+  document.querySelectorAll('input[name="campaignType"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const val = r.value;
+      const paidField = document.getElementById('paidField');
+      const barterField = document.getElementById('barterField');
+      paidField.classList.toggle('show', val === 'Paid cash' || val === 'Paid + Barter');
+      barterField.classList.toggle('show', val === 'Barter' || val === 'Paid + Barter');
+    });
+  });
+
+  // Clear error on input
+  document.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('input', () => el.closest('.field')?.classList.remove('error'));
+    el.addEventListener('change', () => el.closest('.field')?.classList.remove('error'));
+  });
+
+  updateProgress();
+</script>
+</body>
+</html>
